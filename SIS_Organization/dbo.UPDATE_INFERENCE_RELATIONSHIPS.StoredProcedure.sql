@@ -1,12 +1,13 @@
 USE [SIS_Organization]
 GO
 
-/****** Object:  StoredProcedure [dbo].[UPDATE_INFERENCE_RELATIONSHIPS]    Script Date: 18/07/2023 13:01:17 ******/
+/****** Object:  StoredProcedure [dbo].[UPDATE_INFERENCE_RELATIONSHIPS]    Script Date: 19/07/2023 16:03:04 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
@@ -27,8 +28,6 @@ BEGIN
 		UNION SELECT PublicationsOIC,OIC, 1,'SIS_Organization.dbo.Publications' FROM SIS_Organization.dbo.Publications
 		WHERE OIC=@fromIC
 		UNION SELECT SplinterGroupOIC,OIC, 1,'SIS_Organization.dbo.SplinterGroups' FROM SIS_Organization.dbo.SplinterGroups
-		WHERE OIC=@fromIC
-		UNION SELECT LinkOIC,OIC, 1,'SIS_Organization.dbo.PoliticalLinks' FROM SIS_Organization.dbo.PoliticalLinks
 		WHERE OIC=@fromIC
 		UNION SELECT SafeHousesOIC,OIC, 1,'SIS_Organization.dbo.SafeHouses' FROM SIS_Organization.dbo.SafeHouses
 		WHERE OIC=@fromIC
@@ -70,7 +69,18 @@ BEGIN
 	INSERT INTO [SIS_Organization].[dbo].[ExternalLinks]([ExternalLinksOIC],OIC,IsInferred,InferredTable)
 		SELECT OIC,[ExternalLinksOIC],1,'SIS_Organization.dbo.ExternalLinks' FROM [SIS_Organization].[dbo].[ExternalLinks]
 		WHERE OIC=@fromIC
+
+	--REMOVING POLITICAL LINK
+	DELETE FROM [SIS_Organization].[dbo].[PoliticalLinks]
+	WHERE IsInferred=1
+	AND [LinkOIC]=@fromIC
+
+	--INSERT BACK
+	INSERT INTO [SIS_Organization].[dbo].[PoliticalLinks]([LinkOIC],OIC,IsInferred,InferredTable)
+	SELECT OIC,[LinkOIC],1,'SIS_Organization.dbo.PoliticalLinks' FROM [SIS_Organization].[dbo].[PoliticalLinks]
+    WHERE OIC=@fromIC
 	
+  
 	COMMIT TRANSACTION T1
 END
 GO
