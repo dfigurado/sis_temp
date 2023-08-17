@@ -1,7 +1,7 @@
 USE [SIS_Organization]
 GO
 
-/****** Object:  StoredProcedure [dbo].[UPDATE_INFERENCE_RELATIONSHIPS]    Script Date: 13/07/2023 14:29:16 ******/
+/****** Object:  StoredProcedure [dbo].[UPDATE_INFERENCE_RELATIONSHIPS]    Script Date: 19/07/2023 16:03:04 ******/
 
 SET ANSI_NULLS ON
 GO
