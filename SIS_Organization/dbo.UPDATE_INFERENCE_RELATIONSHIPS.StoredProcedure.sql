@@ -1,12 +1,13 @@
 USE [SIS_Organization]
 GO
 
-/****** Object:  StoredProcedure [dbo].[UPDATE_INFERENCE_RELATIONSHIPS]    Script Date: 13/07/2023 14:29:16 ******/
+/****** Object:  StoredProcedure [dbo].[UPDATE_INFERENCE_RELATIONSHIPS]    Script Date: 18/07/2023 13:01:17 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 ALTER PROCEDURE [dbo].[UPDATE_INFERENCE_RELATIONSHIPS]
@@ -31,7 +32,7 @@ BEGIN
 		WHERE OIC=@fromIC
 		UNION SELECT SafeHousesOIC,OIC, 1,'SIS_Organization.dbo.SafeHouses' FROM SIS_Organization.dbo.SafeHouses
 		WHERE OIC=@fromIC
-		UNION SELECT PressesOIC,OIC, 1,'SIS_Organization.dbo.SafeHouses' FROM SIS_Organization.dbo.Presses
+		UNION SELECT PressesOIC,OIC, 1,'SIS_Organization.dbo.Pressed' FROM SIS_Organization.dbo.Presses
 		WHERE OIC=@fromIC
 		
 	DELETE FROM SIS_Activity.dbo.RelatedOrganization
