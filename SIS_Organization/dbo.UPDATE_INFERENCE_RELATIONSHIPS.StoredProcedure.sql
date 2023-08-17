@@ -1,13 +1,12 @@
 USE [SIS_Organization]
 GO
 
-/****** Object:  StoredProcedure [dbo].[UPDATE_INFERENCE_RELATIONSHIPS]    Script Date: 24/07/2023 15:44:25 ******/
+/****** Object:  StoredProcedure [dbo].[UPDATE_INFERENCE_RELATIONSHIPS]    Script Date: 19/07/2023 16:03:04 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
-
 
 
 
@@ -53,18 +52,12 @@ BEGIN
 	AND OIC=@fromIC
 
 	INSERT INTO SIS_Item.dbo.RelatedOrganizations(OIC,IIC,IsInferred,InferredTable)
-		SELECT OIC,IIC,1,'SIS_Organization.dbo.RelatedItems' FROM SIS_Organization.dbo.RelatedItems
+		SELECT OIC,IIC,1,'SIS_Organization.dbo.VehiclesOwned' FROM SIS_Organization.dbo.VehiclesOwned
 		WHERE OIC=@fromIC
 
     --MAKE RELATIONSHIP WITH PERSON.ORGANIZATION
 	INSERT INTO [SIS_Person].[dbo].[Organizations](OIC,PIC,IsInferred,InferredTable)
 		SELECT OIC,PIC,1,'SIS_Organization.dbo.RelatedPersons' FROM SIS_Organization.dbo.RelatedPersons
-		WHERE OIC=@fromIC
-		UNION SELECT OIC,PIC, 1,'SIS_Organization.dbo.Employees' FROM SIS_Organization.[dbo].[Employees]
-		WHERE OIC=@fromIC
-		UNION SELECT OIC,PIC, 1,'SIS_Organization.dbo.Couriers' FROM SIS_Organization.[dbo].[Couriers]
-		WHERE OIC=@fromIC
-		UNION SELECT OIC,PIC, 1,'SIS_Organization.dbo.DistrictLeaders' FROM SIS_Organization.[dbo].[DistrictLeaders]
 		WHERE OIC=@fromIC
 
 	--REMOVING EXTERNAL LINK
